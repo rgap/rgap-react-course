@@ -1,4 +1,4 @@
-# Create React App (CRA)
+# Vite Project
 
 This is how it was created:
 
