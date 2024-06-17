@@ -1,5 +1,5 @@
 {
-  "name": "state-manager",
+  "name": "create-vite-app-example",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,8 +12,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^7.2.4",
-    "redux": "^4.1.0"
+    "mobx": "^6.1.8",
+    "mobx-react": "^7.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
