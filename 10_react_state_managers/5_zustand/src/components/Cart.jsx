@@ -1,4 +1,3 @@
-import React from "react";
 import { useStore } from "../store/useStore";
 
 // The Cart component displays the cart count and provides buttons to add or remove items
