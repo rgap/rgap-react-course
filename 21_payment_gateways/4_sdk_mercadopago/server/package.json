@@ -1,0 +1,16 @@
+{
+  "name": "payment-sdk-integration-mercadopago",
+  "version": "1.0.0",
+  "description": "Server for handling payment integration using MercadoPago SDK",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mercadopago": "^1.5.13",
+    "dotenv": "^10.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

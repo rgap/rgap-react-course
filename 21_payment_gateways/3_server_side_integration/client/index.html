@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server-side Payment Integration</title>
+  </head>
+  <body>
+    <h1>Server-side Payment Processing Example</h1>
+    <form id="payment-form">
+      <label for="card-number">Card Number:</label>
+      <!-- Example Card Number -->
+      <input type="text" id="card-number" name="card-number" value="4242424242424242" required />
+
+      <label for="expiry-date">Expiry Date:</label>
+      <!-- Example Expiry Date -->
+      <input type="text" id="expiry-date" name="expiry-date" value="12/34" required />
+
+      <label for="cvc">CVC:</label>
+      <!-- Example CVC -->
+      <input type="text" id="cvc" name="cvc" value="123" required />
+
+      <button type="submit">Process Payment</button>
+    </form>
+    <script src="server_side_integration.js"></script>
+  </body>
+</html>

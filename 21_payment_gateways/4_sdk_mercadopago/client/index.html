@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment SDK Integration with MercadoPago</title>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+  </head>
+  <body>
+    <h1>Integrate and Use MercadoPago SDK</h1>
+    <form id="form-checkout">
+      <div id="form-checkout__cardNumber"></div>
+      <div id="form-checkout__expirationDate"></div>
+      <div id="form-checkout__securityCode"></div>
+      <input type="text" id="form-checkout__cardholderName" placeholder="Cardholder" value="APRO" />
+      <input type="email" id="form-checkout__cardholderEmail" placeholder="Email" value="test_user_123456@testuser.com" />
+      <select id="form-checkout__issuer">
+        <option value="" disabled selected>Issuer</option>
+      </select>
+      <select id="form-checkout__installments">
+        <option value="" disabled selected>Installments</option>
+      </select>
+
+      <input id="token" name="token" type="hidden" />
+      <input id="paymentMethodId" name="paymentMethodId" type="hidden" />
+      <input id="transactionAmount" name="transactionAmount" type="hidden" value="100" />
+      <input id="description" name="description" type="hidden" value="Product Description" />
+
+      <button type="submit" id="form-checkout__submit">Pay</button>
+    </form>
+    <div id="payment-result" role="alert"></div>
+    <script src="client.js"></script>
+  </body>
+</html>
