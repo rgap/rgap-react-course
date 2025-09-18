@@ -1,0 +1,24 @@
+body {
+  font-family: sans-serif;
+  background: #f3f3f3;
+  color: #222;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1rem 2rem;
+  margin: 1rem auto;
+  max-width: 400px;
+}
+
+.btn {
+  background: #00796b; /* was $primary */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
