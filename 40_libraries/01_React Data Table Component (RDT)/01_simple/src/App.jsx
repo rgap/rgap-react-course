@@ -1,20 +1,22 @@
-import DataTable from "react-data-table-component";
+// App.jsx — Basic table using TanStack Table (React)
+
+// Core TanStack Table APIs to build a table instance and render cells/headers
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import * as React from "react";
 
 // -----------------------------
 // Define the table structure
 // -----------------------------
-// "columns" tells RDT what columns exist in the table and
-// how to map data fields into them.
+// `columns` describes the headers and which field each column reads from.
+// `accessorKey` tells TanStack which property from each row to display.
 const columns = [
-  { name: "Title", selector: r => r.title },
-  { name: "Year", selector: r => r.year },
+  { header: "Title", accessorKey: "title" },
+  { header: "Year", accessorKey: "year" },
 ];
 
 // -----------------------------
 // Provide some sample data
 // -----------------------------
-// This is static for now, but later projects will show
-// how to load dynamic or server-side data.
 const data = [
   { id: 1, title: "Conan the Barbarian", year: 1982 },
   { id: 2, title: "The Terminator", year: 1984 },
@@ -22,15 +24,49 @@ const data = [
 ];
 
 // -----------------------------
-// App component renders the DataTable
+// App component renders the table
 // -----------------------------
-// The <DataTable> component is provided by
-// "react-data-table-component" (RDT).
+// TanStack Table gives us a "table instance" (via `useReactTable`) and
+// we map its header groups and rows into a plain HTML <table>.
 export default function App() {
+  const table = useReactTable({
+    data,
+    columns,
+    // getCoreRowModel gives us the basic row/column model (no sorting, filtering, etc.)
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
     <div>
-      <h2>01 — Basic</h2>
-      <DataTable columns={columns} data={data} />
+      <h2>01 — Basic (TanStack)</h2>
+
+      <table>
+        <thead>
+          {table.getHeaderGroups().map(headerGroup => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map(header => (
+                <th key={header.id}>
+                  {/* flexRender safely renders a header/cell whether it's text or a component */}
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+
+        <tbody>
+          {table.getRowModel().rows.map(row => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map(cell => (
+                <td key={cell.id}>
+                  {/* flexRender for cells mirrors header rendering */}
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
