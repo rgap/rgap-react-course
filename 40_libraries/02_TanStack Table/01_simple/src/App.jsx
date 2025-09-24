@@ -2,15 +2,13 @@
 // Minimal equivalent of your RDT "01_simple": basic columns + data.
 // No pagination/filters yet—this is just the bare table rendering.
 
-import * as React from "react";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-} from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
-const columnHelper = createColumnHelper();
+const columns = [
+  { header: "ID", accessorKey: "id" },
+  { header: "Name", accessorKey: "name" },
+  { header: "Role", accessorKey: "role" },
+];
 
 const data = [
   { id: 1, name: "Ellen Ripley", role: "Warrant Officer" },
@@ -19,49 +17,42 @@ const data = [
   { id: 4, name: "Carter Burke", role: "Company Rep" },
 ];
 
-const columns = [
-  columnHelper.accessor("id", {
-    header: () => "ID",
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor("name", {
-    header: () => "Name",
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor("role", {
-    header: () => "Role",
-    cell: info => info.getValue(),
-  }),
-];
-
 export default function App() {
   const table = useReactTable({
     data,
     columns,
+    // getCoreRowModel gives us the basic row/column model (no sorting, filtering, etc.)
+    // it's not required, but it's a good practice to include it since it:
+    // 1) Makes the data pipeline explicit (base layer other features build on).
+    // 2) Avoids surprises when you add sorting/filtering/pagination later.
+    // 3) Matches the docs/examples and upgrades more predictably.
+    // 4) Enables memoized row modeling for better perf on larger tables.
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <div style={{ padding: 16, fontFamily: "system-ui, sans-serif" }}>
+    <div>
       <style>{`
-        .tbl { width: 100%; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
-        .tbl table { width: 100%; border-collapse: separate; border-spacing: 0; }
-        .tbl thead th { text-align: left; background: #f9fafb; border-bottom: 1px solid #e5e7eb; padding: 10px 12px; font-weight: 600; }
-        .tbl tbody td { border-bottom: 1px solid #f1f5f9; padding: 10px 12px; vertical-align: top; }
-        .tbl tbody tr:last-child td { border-bottom: none; }
-        .col-id { width: 88px; }
+        table {
+          border-collapse: collapse;
+          border: 1px solid black;
+        }
+        table th,
+        table td {
+          border: 1px solid black;
+        }.
       `}</style>
 
-      <h1 style={{ margin: 0, marginBottom: 12 }}>TanStack — Simple v1</h1>
+      <h1>TanStack — Simple v1</h1>
 
-      <div className="tbl">
+      <div>
         <table>
           <thead>
-            {table.getHeaderGroups().map(hg => (
-              <tr key={hg.id}>
-                {hg.headers.map(h => (
-                  <th key={h.id} className={h.column.id === "id" ? "col-id" : undefined}>
-                    {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
+            {table.getHeaderGroups().map(headerGroup => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map(header => (
+                  <th key={header.id}>
+                    {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
                 ))}
               </tr>
@@ -71,7 +62,7 @@ export default function App() {
             {table.getRowModel().rows.map(row => (
               <tr key={row.id}>
                 {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className={cell.column.id === "id" ? "col-id" : undefined}>
+                  <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

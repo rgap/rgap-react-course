@@ -1,19 +1,34 @@
-// App.jsx — Fixed Row Height v1 (one-line ellipsis)
-// Fixed row height with clipped overflow. Each cell renders a single line with "…".
-// Note: we use `height` (not minHeight) to keep all rows exactly the same size.
+// App.jsx — TanStack Table: Fixed Row Height v1 (one-line ellipsis)
+// Keep every row exactly 48px tall; clip overflow with "…"; per-column fixed widths.
 
-import DataTable from "react-data-table-component";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import * as React from "react";
 
+// Small helper to clamp to one line with ellipsis
 const OneLine = ({ children, max }) => (
-  <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: max }}>{children}</div>
+  <span
+    style={{
+      display: "block",
+      height: 48, // strict row box height
+      lineHeight: "48px", // vertical centering for a single line
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      maxWidth: max, // inner max width so ellipsis appears before cell edge
+    }}
+    title={String(children)}
+  >
+    {children}
+  </span>
 );
 
+// Fixed px widths and per-cell max widths (to show ellipsis sooner)
 const columns = [
-  { name: "ID", selector: r => r.id, width: "72px", cell: r => <OneLine max={60}>{r.id}</OneLine> },
-  { name: "Name", width: "260px", cell: r => <OneLine max={240}>{r.name}</OneLine> },
-  { name: "Role", width: "280px", cell: r => <OneLine max={260}>{r.role}</OneLine> },
-  { name: "Age", width: "90px", right: true, cell: r => <OneLine max={60}>{r.age}</OneLine> },
-  { name: "Location", width: "320px", cell: r => <OneLine max={300}>{r.location}</OneLine> },
+  { header: "ID", accessorKey: "id", meta: { w: 72, max: 60 } },
+  { header: "Name", accessorKey: "name", meta: { w: 260, max: 240 } },
+  { header: "Role", accessorKey: "role", meta: { w: 280, max: 260 } },
+  { header: "Age", accessorKey: "age", meta: { w: 90, max: 60, right: true } },
+  { header: "Location", accessorKey: "location", meta: { w: 320, max: 300 } },
 ];
 
 const data = [
@@ -47,18 +62,83 @@ const data = [
   },
 ];
 
-const customStyles = {
-  table: { style: { width: "max-content" } }, // prevent stretch (optional here, keeps widths honest)
-  headRow: { style: { height: "48px" } }, // fixed header height
-  rows: { style: { height: "48px" } }, // <-- fixed row height
-  cells: { style: { paddingTop: 0, paddingBottom: 0 } }, // remove vertical padding so height is strict
-};
-
 export default function App() {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    // Map TanStack cells → our OneLine wrapper so every cell truncates to one line
+    columns: columns.map(col => ({
+      ...col,
+      cell: info => <OneLine max={info.column.columnDef.meta?.max}>{info.getValue()}</OneLine>,
+    })),
+  });
+
+  // Apply fixed px width + alignment from column meta
+  const cellStyle = col => {
+    const w = col.columnDef.meta?.w;
+    const right = col.columnDef.meta?.right;
+    return {
+      width: w,
+      minWidth: w,
+      maxWidth: w,
+      boxSizing: "border-box",
+      textAlign: right ? "right" : "left",
+      padding: "0 12px", // no vertical padding → strict 48px rows
+      borderBottom: "1px solid #f1f5f9",
+      borderRight: "1px solid #e5e7eb",
+      verticalAlign: "top",
+      background: undefined,
+      fontWeight: undefined,
+    };
+  };
+
   return (
-    <div>
-      <h1>RDT — Fixed Row Height v1 (One-line Ellipsis)</h1>
-      <DataTable columns={columns} data={data} customStyles={customStyles} dense />
+    <div style={{ fontFamily: "system-ui, sans-serif", padding: 16 }}>
+      <h1>TanStack — Fixed Row Height v1 (One-line Ellipsis)</h1>
+
+      <style>{`
+        .wrap { overflow-x: auto; }
+        .tbl  { width: max-content; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+        table { border-collapse: separate; border-spacing: 0; table-layout: fixed; } /* respect px widths */
+        thead th {
+          height: 48px; line-height: 48px;
+          background:#f9fafb; border-bottom:1px solid #e5e7eb; padding:0 12px; text-align:left;
+          border-right:1px solid #e5e7eb;
+        }
+        tbody td { height: 48px; } /* strict row height */
+        thead th:last-child, tbody td:last-child { border-right: none; }
+        tbody tr:last-child td { border-bottom: none; }
+      `}</style>
+
+      <div className="wrap">
+        <div className="tbl">
+          <table>
+            <thead>
+              {table.getHeaderGroups().map(hg => (
+                <tr key={hg.id}>
+                  {hg.headers.map(h => (
+                    <th key={h.id} style={cellStyle(h.column)}>
+                      {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map(row => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} style={cellStyle(cell.column)}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

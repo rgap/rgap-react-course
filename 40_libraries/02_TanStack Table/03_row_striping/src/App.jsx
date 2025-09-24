@@ -1,15 +1,14 @@
 // App.jsx — TanStack Table with striped rows (minimal)
-import * as React from "react";
-import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
-// Define columns → header text + which field to read from each row
+// Define columns
 const columns = [
   { header: "ID", accessorKey: "id" },
   { header: "Name", accessorKey: "name" },
   { header: "Role", accessorKey: "role" },
 ];
 
-// Sample data (same spirit as RDT example)
+// Sample data
 const data = [
   { id: 1, name: "Ellen Ripley", role: "Warrant Officer" },
   { id: 2, name: "Dwayne Hicks", role: "Corporal" },
@@ -18,7 +17,6 @@ const data = [
 ];
 
 export default function App() {
-  // Build the table model (headless). We render the HTML ourselves.
   const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
 
   return (
@@ -27,22 +25,24 @@ export default function App() {
 
       {/* Tiny CSS: striped effect via :nth-child on table rows */}
       <style>{`
-        .striped { border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
-        .striped table { width: 100%; border-collapse: separate; border-spacing: 0; }
-        thead th { background: #f9fafb; border-bottom: 1px solid #e5e7eb; text-align: left; padding: 10px 12px; }
-        tbody td { padding: 10px 12px; }
-        tbody tr:nth-child(even) td { background: #f8fafc; } /* ← stripe */
+        table {
+          border-collapse: separate;
+        }
+        table thead th {
+          background:rgb(190, 202, 253);
+        }
+        table tbody tr:nth-child(even) td {
+          background: rgb(190, 202, 253);
+        }
       `}</style>
 
-      <div className="striped">
+      <div>
         <table>
           <thead>
             {table.getHeaderGroups().map(hg => (
               <tr key={hg.id}>
                 {hg.headers.map(h => (
-                  <th key={h.id}>
-                    {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
-                  </th>
+                  <th key={h.id}>{h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}</th>
                 ))}
               </tr>
             ))}

@@ -1,6 +1,5 @@
-// App.jsx — TanStack Table with full grid (all cell borders)
+// App.jsx — TanStack Table with ONLY vertical column separators
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import * as React from "react";
 
 const columns = [
   { header: "ID", accessorKey: "id" },
@@ -19,18 +18,20 @@ export default function App() {
   const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", padding: 16 }}>
-      <h1>TanStack — Borders: Full Grid</h1>
+    <div>
+      <h1>TanStack — Borders: Vertical Only</h1>
 
-      {/* Draw vertical lines for every column; trim the last to keep the outer edge clean */}
       <style>{`
         table {
           border-collapse: collapse;
+          border: 1px solid black;
         }
-
         table th,
         table td {
-          border: 1px solid black;
+          border-right: 1px solid black; /* vertical dividers */
+        }
+        table tr > *:last-child {
+          border-right: 0; /* no line after the last column */
         }
       `}</style>
 

@@ -1,4 +1,5 @@
-// App.jsx — TanStack Table: fixed widths + simple borders (super minimal)
+// App.jsx — TanStack Table: Fixed Row Height (two-line clamp, no inner element)
+
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
 const columns = [
@@ -45,20 +46,37 @@ export default function App() {
 
   return (
     <div>
-      {/* width:max-content hugs sum of fixed widths; outer div scrolls on small screens */}
       <style>{`
       table {
         border-collapse: collapse;
-        inline-size: max-content; /* this can be replace by the sum of the widths: 72 + 260 + 300 + 90 + 340 = 1062px */
-        table-layout: fixed;
+        width: 1062px; /* a bit wider for 2 columns */
+        table-layout: fixed; /* predictable column widths */
       }
 
       th,
       td {
         border: 1px solid #444;
-        overflow-wrap: anywhere;
+        padding: 0; /* let the inner div handle visual padding */
+        vertical-align: top; /* normal table-cell behavior preserved */
+        box-sizing: border-box;
       }
-   
+
+      th > div, td > div {
+        --lines: 2; /* default visible lines */
+        --lh: 20px; /* default line-height per line */
+
+        padding: 0 8px; /* visual padding */
+        display: -webkit-box; /* required for -webkit-line-clamp */
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: var(--lines);
+        line-clamp: var(--lines);
+        overflow: hidden; /* hide beyond N lines */
+        white-space: normal; /* allow wrapping */
+        line-height: var(--lh);
+        height: calc(var(--lines) * var(--lh)); /* fixed content-box height */
+        box-sizing: border-box;
+      }
+
       table col.col-1 {
         width: 72px;
       }
@@ -90,7 +108,9 @@ export default function App() {
               {table.getHeaderGroups().map(hg => (
                 <tr key={hg.id}>
                   {hg.headers.map(h => (
-                    <th key={h.id}>{h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}</th>
+                    <th key={h.id}>
+                      <div>{h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}</div>
+                    </th>
                   ))}
                 </tr>
               ))}
@@ -99,7 +119,10 @@ export default function App() {
               {table.getRowModel().rows.map(row => (
                 <tr key={row.id}>
                   {row.getVisibleCells().map(cell => (
-                    <td key={cell.id}>{flexRender(cell.column.columnDef.cell ?? (ctx => ctx.getValue()), cell.getContext())}</td>
+                    <td key={cell.id}>
+                      {" "}
+                      <div>{flexRender(cell.column.columnDef.cell ?? (ctx => ctx.getValue()), cell.getContext())}</div>
+                    </td>
                   ))}
                 </tr>
               ))}

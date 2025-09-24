@@ -1,6 +1,5 @@
 // App.jsx — TanStack Table with horizontal row separators only
-import * as React from "react";
-import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
 const columns = [
   { header: "ID", accessorKey: "id" },
@@ -19,27 +18,27 @@ export default function App() {
   const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel() });
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", padding: 16 }}>
+    <div>
       <h1>TanStack — Borders: Horizontal Only</h1>
 
       {/* Frame + header line + horizontal separators */}
       <style>{`
-        .tbl { border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
-        .tbl table { width: 100%; border-collapse: separate; border-spacing: 0; }
-        thead th { background: #f9fafb; border-bottom: 1px solid #e5e7eb; text-align: left; padding: 10px 12px; }
-        tbody td { border-bottom: 1px solid #e5e7eb; padding: 10px 12px; }
-        tbody tr:last-child td { border-bottom: none; }
+        table {
+          border-collapse: collapse;
+          margin-bottom: 1.5em;
+        }
+        table tbody tr {
+          border-top: 1px solid black;
+        }
       `}</style>
 
-      <div className="tbl">
+      <div>
         <table>
           <thead>
             {table.getHeaderGroups().map(hg => (
               <tr key={hg.id}>
                 {hg.headers.map(h => (
-                  <th key={h.id}>
-                    {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
-                  </th>
+                  <th key={h.id}>{h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}</th>
                 ))}
               </tr>
             ))}

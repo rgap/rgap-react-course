@@ -1,4 +1,5 @@
-// App.jsx — TanStack Table: fixed widths + simple borders (super minimal)
+// App.jsx — TanStack Table: Fixed Row Height (exact 48.00px) — no inner div/span
+
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
 const columns = [
@@ -49,7 +50,7 @@ export default function App() {
       <style>{`
       table {
         border-collapse: collapse;
-        inline-size: max-content; /* this can be replace by the sum of the widths: 72 + 260 + 300 + 90 + 340 = 1062px */
+        width: 1062px;
         table-layout: fixed;
       }
 
@@ -57,6 +58,12 @@ export default function App() {
       td {
         border: 1px solid #444;
         overflow-wrap: anywhere;
+
+        padding: 0;                 /* remove default padding */
+        height: 40px;               /* content-box target */
+        overflow: hidden;           /* hide overflow beyond the cell box */
+        white-space: nowrap;        /* force a single line */
+        text-overflow: ellipsis;    /* show “…” when clipped */
       }
    
       table col.col-1 {
