@@ -1,0 +1,35 @@
+.page {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* variant="primary" */
+.button-primary {
+  background-color: royalblue;
+  color: white;
+}
+
+/* variant="secondary" */
+.button-secondary {
+  background-color: lightgray;
+  color: black;
+}
+
+/* variant="danger" */
+.button-danger {
+  background-color: crimson;
+  color: white;
+}
