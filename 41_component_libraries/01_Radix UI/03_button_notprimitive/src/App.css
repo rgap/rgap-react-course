@@ -1,0 +1,70 @@
+.app {
+  max-width: 620px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.description {
+  margin-top: 8px;
+  color: #555555;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.linkExample {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #dddddd;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button-primary {
+  border: none;
+  background-color: #222222;
+  color: white;
+}
+
+.button-secondary {
+  border: 1px solid #cccccc;
+  background-color: white;
+  color: #222222;
+}
+
+.button-danger {
+  border: 1px solid #cc3333;
+  background-color: white;
+  color: #cc3333;
+}
+
+.button:hover {
+  opacity: 0.85;
+}
