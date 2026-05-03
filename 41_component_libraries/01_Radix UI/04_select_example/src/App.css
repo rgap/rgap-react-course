@@ -1,0 +1,96 @@
+.app {
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.description {
+  margin-top: 8px;
+  color: #555555;
+  line-height: 1.5;
+}
+
+.field {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.selectTrigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.selectTrigger:focus {
+  outline: 2px solid #222222;
+  outline-offset: 2px;
+}
+
+.selectIcon {
+  font-size: 12px;
+}
+
+.selectContent {
+  width: var(--radix-select-trigger-width);
+  margin-top: 6px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.selectViewport {
+  padding: 4px;
+}
+
+.selectItem {
+  padding: 10px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.selectItem:hover,
+.selectItem[data-highlighted] {
+  background-color: #eeeeee;
+}
+
+.selectItem[data-state="checked"] {
+  font-weight: bold;
+}
+
+.resultBox {
+  margin-top: 24px;
+  padding: 14px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+}

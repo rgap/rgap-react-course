@@ -1,0 +1,18 @@
+.page {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+}
+
+.button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: lightgray;
+  color: black;
+  cursor: pointer;
+}
+
+.button-active {
+  background-color: royalblue;
+  color: white;
+}
