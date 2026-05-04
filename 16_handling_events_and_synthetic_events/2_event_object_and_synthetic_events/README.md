@@ -63,9 +63,25 @@ export default App;
 
 By default, submitting a form refreshes the page. `event.preventDefault()` prevents that default behavior.
 
+
+
 ## What is a SyntheticEvent?
 
-In regular browser JavaScript, events come from the browser directly. These are called **native DOM events**.
+The event object in React is actually not the same as the event listener `event` object in regular JavaScript.
+
+In regular browser JavaScript, events come from the browser directly. These are called **native DOM events**, for example a `click` event created when the user clicks a button, an `input` event created when the user types in a text field, or a `submit` event created when the user submits a form.
+
+For example, in plain JavaScript:
+
+```js
+const button = document.querySelector("button");
+
+button.addEventListener("click", function (event) {
+  console.log(event);
+});
+```
+
+In this case, `event` is a **native DOM event** because it comes directly from the browser’s DOM event system.
 
 However, React does not usually give your handler the raw browser event directly. Instead, React gives you a **React event object**, also called a **SyntheticEvent**. React’s documentation says event handlers receive a React event object, sometimes known as a synthetic event, which follows the same standard as DOM events while fixing browser inconsistencies. ([React][1])
 
