@@ -1,45 +1,90 @@
-import React, { useState } from "react";
-import { useFetch } from "./useFetch";
+import React from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Link,
+  Outlet,
+  ScrollRestoration, // 1. Import ScrollRestoration
+} from "react-router-dom";
 
-function PostDetails({ postId }) {
-  // Consuming our custom hook!
-  const { data: post, isLoading, error } = useFetch(`https://jsonplaceholder.typicode.com/posts/${postId}`);
+const Article = ({ title, paragraphs = 15 }) => (
+  <div>
+    <h2>{title}</h2>
+    {Array.from({ length: paragraphs }, (_, i) => (
+      <p key={i} style={{ lineHeight: "1.8", marginBottom: "16px", color: "#444" }}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+        exercitation ullamco laboris. Paragraph {i + 1} of {paragraphs}.
+      </p>
+    ))}
+  </div>
+);
 
-  if (isLoading) return <div style={{ padding: "20px" }}>⏳ Loading Post {postId}...</div>;
-  if (error) return <div style={{ padding: "20px", color: "red" }}>❌ {error}</div>;
-  if (!post) return null;
-
+function Layout() {
   return (
-    <div style={{ border: "1px solid #ccc", padding: "20px", borderRadius: "8px", marginTop: "20px" }}>
-      <h2>{post.title}</h2>
-      <p>{post.body}</p>
+    <div style={{ fontFamily: "Arial, sans-serif" }}>
+      <nav style={{ position: "sticky", top: 0, backgroundColor: "#1b5e20", padding: "12px 24px", display: "flex", gap: "20px", zIndex: 100 }}>
+        <Link to="/" style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}>Home</Link>
+        <Link to="/about" style={{ color: "#a5d6a7", textDecoration: "none" }}>About</Link>
+        <Link to="/blog" style={{ color: "#a5d6a7", textDecoration: "none" }}>Blog</Link>
+      </nav>
+      <main style={{ maxWidth: "700px", margin: "0 auto", padding: "30px 20px" }}>
+        <Outlet />
+      </main>
+
+      {/*
+        2. Drop <ScrollRestoration /> anywhere inside the router tree.
+        Convention: place it in the Root Layout, alongside the <Outlet />.
+        It renders NOTHING visible — it only adds scroll management behavior.
+      */}
+      <ScrollRestoration />
     </div>
   );
 }
 
-function App() {
-  const [activeId, setActiveId] = useState(1);
-
+function Home() {
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", maxWidth: "600px" }}>
-      <h1>The Basic <code>useFetch</code> Hook</h1>
-      <p>We've extracted all the boilerplate into a custom hook. Look how clean the <code>PostDetails</code> component is!</p>
-      
-      <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-        {[1, 2, 3].map(id => (
-          <button 
-            key={id} 
-            onClick={() => setActiveId(id)}
-            style={{ fontWeight: activeId === id ? "bold" : "normal" }}
-          >
-            Load Post {id}
-          </button>
-        ))}
-      </div>
-
-      <PostDetails postId={activeId} />
-    </div>
+    <>
+      <h1>✅ ScrollRestoration Active</h1>
+      <p style={{ backgroundColor: "#e8f5e9", padding: "15px", borderRadius: "8px", color: "#2e7d32" }}>
+        Scroll down, then navigate to another page. You will be taken straight to the top!
+        Then use the browser Back button — your previous scroll position is restored!
+      </p>
+      <Article title="Home Page Content" paragraphs={20} />
+    </>
   );
 }
 
-export default App;
+function About() {
+  return (
+    <>
+      <h1>About Page</h1>
+      <Article title="Our Story" paragraphs={20} />
+    </>
+  );
+}
+
+function Blog() {
+  return (
+    <>
+      <h1>Blog Page</h1>
+      <Article title="Latest Articles" paragraphs={20} />
+    </>
+  );
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "about", element: <About /> },
+      { path: "blog", element: <Blog /> },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
+}
