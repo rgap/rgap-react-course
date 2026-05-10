@@ -9,6 +9,7 @@ function ChildComponent() {
 
     // The function returned by useEffect is the CLEANUP function.
     // It runs when the component unmounts.
+    // Unmounting happens when ...
     return () => {
       console.log("🔴 Child unmounted (Cleanup ran)");
     };
