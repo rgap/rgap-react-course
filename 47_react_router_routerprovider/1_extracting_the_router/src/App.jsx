@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 // Because main.jsx now renders <RouterProvider>,
 // App.jsx is no longer the "root" component of the React tree.
