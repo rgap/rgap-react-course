@@ -43,6 +43,9 @@ function App() {
   */
   useEffect(() => {
     console.log("EFFECT PHASE: React ran the effect after the UI update.");
+    // The [] (empty array) tells React to run this effect only once after the initial render.
+    // If we omit it, it will run after every render.
+    // If we provide dependencies (e.g. [title, message]), it will run only when those dependencies change.
   }, []);
 
   /*
